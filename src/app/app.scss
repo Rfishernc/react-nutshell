@@ -1,10 +1,10 @@
 @import '../styles/colors.scss';
 
-body {
-  display: flex;
-  justify-content: center;
-}
-
 .btn {
   margin-top: 50px;
+}
+
+.main {
+  display: flex;
+  justify-content: center;
 }
