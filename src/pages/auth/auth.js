@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import authRequests from '../helpers/data/authRequests';
+import authRequests from '../../helpers/data/authRequests';
 
 class auth extends Component {
   authenticateUser = (event) => {
     event.preventDefault();
     authRequests.authenticate()
       .then((data) => {
-        const user = data.user.uid;
-        this.props.isAuthenticated(user);
+        this.props.history.push('/home');
       })
       .catch((err) => {
         console.log(err);
