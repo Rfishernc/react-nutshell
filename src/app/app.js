@@ -62,7 +62,7 @@ class App extends React.Component {
   }
 
   render() {
-    const {authenticated, pendingUser } = this.state;
+    const { authenticated, pendingUser } = this.state;
     const logoutClicked = () => {
       authRequests.logoutUser();
       this.setState({
