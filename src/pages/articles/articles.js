@@ -22,8 +22,8 @@ class articles extends React.Component {
       .then((articlesArray) => {
         this.setState({ articlesList: articlesArray });
       })
-      .catch(() => {
-
+      .catch((err) => {
+        console.log(err);
       });
   }
 
