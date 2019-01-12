@@ -10,10 +10,20 @@ class articles extends React.Component {
     articlesList: [],
   }
 
+  refreshArticles = () => {
+    smashRequests.getArticlesFromMeAndFriends(authRequests.getCurrentUid())
+      .then((articlesArray) => {
+        this.setState({ articlesList: articlesArray });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   articlesBuilder = () => {
     const articlesRender = [];
     this.state.articlesList.forEach((article) => {
-      articlesRender.push(<Article title={article.title} synopsis={article.synopsis} url={article.url} key={article.title}/>);
+      articlesRender.push(<Article title={article.title} synopsis={article.synopsis} url={article.url} key={article.id} id={article.id} refreshArticles={this.refreshArticles}/>);
     });
     return articlesRender;
   }
@@ -38,13 +48,7 @@ class articles extends React.Component {
   }
 
   componentDidMount() {
-    smashRequests.getArticlesFromMeAndFriends(authRequests.getCurrentUid())
-      .then((articlesArray) => {
-        this.setState({ articlesList: articlesArray });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    this.refreshArticles();
   }
 
   render() {
@@ -57,15 +61,15 @@ class articles extends React.Component {
             <h4>Add A New Article</h4>
             <form>
               <div className="form-group">
-                <label for="articleName">Article Title</label>
+                <label htmlFor="articleName">Article Title</label>
                 <input type="text" className="form-control" id="articleName" placeholder="Article Title"/>
               </div>
-              <div class="form-group">
-                <label for="articleSynopsis">Article Synopsis</label>
+              <div className="form-group">
+                <label htmlFor="articleSynopsis">Article Synopsis</label>
                 <input type="text" className="form-control" id="articleSynopsis" placeholder="Synopsis"/>
               </div>
-              <div class="form-group">
-                <label for="articleUrl">Article URL</label>
+              <div className="form-group">
+                <label htmlFor="articleUrl">Article URL</label>
                 <input type="text" className="form-control" id="articleUrl" placeholder="URL"/>
               </div>
               <button type="submit" className="btn btn-primary" onClick={this.articleBundler}>Submit</button>
