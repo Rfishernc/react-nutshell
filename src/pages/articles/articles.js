@@ -2,6 +2,7 @@ import React from 'react';
 import './articles.scss';
 import smashRequests from '../../helpers/data/smashRequests';
 import authRequests from '../../helpers/data/authRequests';
+import articleRequests from '../../helpers/data/articleRequests';
 import Article from '../article/article';
 
 class articles extends React.Component {
@@ -17,13 +18,32 @@ class articles extends React.Component {
     return articlesRender;
   }
 
+  articleBundler = () => {
+    const newArticle = {
+      title: document.getElementById('articleName').value,
+      synopsis: document.getElementById('articleSynopsis').value,
+      url: document.getElementById('articleUrl').value,
+      uid: authRequests.getCurrentUid(),
+    };
+    articleRequests.postRequest(newArticle)
+      .then(() => {
+        smashRequests.getArticlesFromMeAndFriends(authRequests.getCurrentUid())
+          .then((articlesArray) => {
+            this.setState({ articlesList: articlesArray });
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   componentDidMount() {
     smashRequests.getArticlesFromMeAndFriends(authRequests.getCurrentUid())
       .then((articlesArray) => {
         this.setState({ articlesList: articlesArray });
       })
-      .catch(() => {
-
+      .catch((err) => {
+        console.log(err);
       });
   }
 
@@ -36,19 +56,19 @@ class articles extends React.Component {
           <div className='col-3'>
             <h4>Add A New Article</h4>
             <form>
-              <div class="form-group">
+              <div className="form-group">
                 <label for="articleName">Article Title</label>
-                <input type="text" class="form-control" id="articleName" placeholder="Article Title"/>
+                <input type="text" className="form-control" id="articleName" placeholder="Article Title"/>
               </div>
               <div class="form-group">
                 <label for="articleSynopsis">Article Synopsis</label>
-                <input type="text" class="form-control" id="articleSynopsis" placeholder="Synopsis"/>
+                <input type="text" className="form-control" id="articleSynopsis" placeholder="Synopsis"/>
               </div>
               <div class="form-group">
                 <label for="articleUrl">Article URL</label>
-                <input type="text" class="form-control" id="articleUrl" placeholder="URL"/>
+                <input type="text" className="form-control" id="articleUrl" placeholder="URL"/>
               </div>
-              <button type="submit" class="btn btn-primary">Submit</button>
+              <button type="submit" className="btn btn-primary" onClick={this.articleBundler}>Submit</button>
             </form>
           </div>
         </div>
